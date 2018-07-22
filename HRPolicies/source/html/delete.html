@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>HR Policies List</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/delete.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>HR Policies List</h1>
+        <div class="policies"></div>
+        <script>
+            $.ajax({url:"/hrpolicies/listall",
+                success : function(data) {
+                   console.log(data); 
+                   var dataArrLen = data && data.length ? data.length : 0;
+                   for(var i = 0; i < dataArrLen; i++) {
+                    var desc = data[i].desc;
+                       var descLen = desc.length;
+                       var domCont = '<div style="display:inline-block"> <h3 class = "policy" >' + data[i].name + '</h3><div class="remove" name = "' + data[i].name + '">Remove</div></div>'
+                       for(var j = 0 ; j < descLen; j++) {
+                           domCont += '<div class="desc"><div class = "policydesc" >' + data[i].desc[j].text + '</div></div>'
+                       }
+                       $(".policies").append(domCont);
+                   }
+                   $(".remove").off("click").on("click",function() {
+                        $.ajax({url:"/hrpolicies/delete",
+                            type: 'delete',
+                            data: {"id":$(this).attr("name")},
+                            success : function(data) {
+                               console.log(data);
+                               location.href = "";
+                           }
+                       });
+                   });
+                }
+            });
+        </script>
+    </body>
+</html>
