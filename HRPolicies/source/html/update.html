@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>HR Policies List</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../css/update.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>HR Policies List</h1>
+        <div class="policies"></div>
+        <script>
+            $.ajax({url:"/hrpolicies/listall",
+                success : function(data) {
+                   console.log(data); 
+                   var dataArrLen = data && data.length ? data.length : 0;
+                   for(var i = 0; i < dataArrLen; i++) {
+                       var desc = data[i].desc;
+                       var domCont = '<ul><div style="display:inline-block"> <h3 class = "policy" style="color: #261F3A;font-size: 18px;float:left;" >' + data[i].name + '</h3></div>';
+                       var descLen = desc.length;
+                       for(var j = 0; j < descLen; j++) {
+                           domCont += '<li><div class="desc"><div class = "policy" style="color: darkslategrey;font-size: 15px;padding-bottom:10px" >' + data[i].desc[j].text + '</div><div name = "'+ data[i].name + '" id = "' + data[i].desc[j].id + '"class="edit" style = "color: #43449F;font-weight: bold;font-size: 15px;text-decoration: underline;">Edit</div></div></li>'
+                       }
+                       $(".policies").append(domCont + '</ul>');
+                   }
+                   $(".edit").off("click").on("click",function() {
+                       var dom = $(this).closest(".desc");
+                       dom.hide();
+                       let name = $(this).attr("name");
+                       let id = $(this).attr("id");
+                       $('<input class="desc" name = "desc" placeholder="Description" style = "display:block;margin-bottom:10px;"><input class = "apply" style = "display:block;"type=submit value="Apply">').insertBefore(dom);
+                       $(".apply").off("click").on("click",function() {
+                          $.ajax({url:"/hrpolicies/update",
+                            type: 'put',
+                            data: {"desc":$(this).siblings(".desc").val(),'name':name,'id':id},
+                            success : function(data) {
+                               console.log(data);
+                               location.href = "";
+                           }
+                           }); 
+                       })
+                   });
+                }
+            });
+        </script>
+    </body>
+</html>

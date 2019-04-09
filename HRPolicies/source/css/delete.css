@@ -1,0 +1,16 @@
+.policy {
+    color: #261F3A;
+    font-size: 18px;
+    float:left;
+}
+.remove {
+    padding-top:19px;
+    padding-left:15px;
+    overflow: hidden;
+    color:red;
+}
+.policydesc {
+    color: darkslategrey;
+    font-size: 15px;
+    padding-bottom:10px
+}

@@ -1,0 +1,11 @@
+.policies {
+    text-align: center;
+}
+.policies button {
+    border: #009688;
+    background-color: #009688;
+    color: #ffffff;
+    width: 250px;
+    height: 50px;
+    border-radius: 30px;
+}
